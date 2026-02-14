@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>A Question for You</title>
+
+<style>
+body {
+  background: linear-gradient(to bottom, #ffd6e8, #fff);
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Georgia", serif;
+  overflow: hidden;
+}
+
+.container {
+  text-align: center;
+  background: white;
+  padding: 50px 60px;
+  border-radius: 30px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+h1 {
+  color: #000;
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+.question {
+  font-size: 24px;
+  color: #333;
+  margin: 30px 0 50px 0;
+  font-weight: bold;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.btn {
+  padding: 15px 40px;
+  font-size: 20px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+  font-family: "Georgia", serif;
+}
+
+.btn-yes {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  box-shadow: 0 8px 20px rgba(245, 87, 108, 0.4);
+}
+
+.btn-yes:hover {
+  transform: scale(1.1);
+  box-shadow: 0 12px 30px rgba(245, 87, 108, 0.6);
+}
+
+.btn-no {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+  position: fixed;
+  box-shadow: 0 8px 20px rgba(79, 172, 254, 0.4);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.celebration {
+  display: none;
+  text-align: center;
+}
+
+.celebration h2 {
+  color: #f5576c;
+  font-size: 48px;
+  margin-bottom: 20px;
+  animation: fadeInScale 0.6s ease;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.celebration img {
+  width: 300px;
+  border-radius: 20px;
+  margin-top: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.hearts {
+  position: fixed;
+  pointer-events: none;
+  font-size: 30px;
+  opacity: 0;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-1000px) rotate(360deg);
+    opacity: 0;
+  }
+} 
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div id="questionScreen">
+    <h1>Do you love me?</h1>
+    
+    <div class="buttons">
+      <button class="btn btn-yes" onclick="sayYes()">Yes!</button>
+    </div>
+    <button class="btn btn-no" id="noBtn" onmouseover="moveButton(event)" onclick="moveButton(event)">No</button>
+  </div>
+
+  <div class="celebration" id="celebration">
+    <h2>I knew it!</h2>
+    <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExemVwNHlpdG15Z2F3azc3a29wMHZpeGV5d3RpdHY2YWswZzZhcDZvYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lsJCkIKV6AT28/giphy.gif" alt="Celebration">
+    <div>
+      <a href="https://merchant.wgiftcard.com/card/virtual/cert/chipotle/73/342806728/HS8ZNGC4ZY" target="_blank" style="display: inline-block; margin-top: 25px; padding: 15px 35px; background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%); color: white; text-decoration: none; border-radius: 50px; font-size: 18px; font-weight: bold; box-shadow: 0 8px 20px rgba(139, 69, 19, 0.4); transition: all 0.3s;">Here's another surprise for you (I know you said no gifts but it's something really small)</a>
+    </div>
+  </div>
+</div>
+
+<script>
+let attempts = 0;
+
+// Position both buttons centered
+window.addEventListener('load', function() {
+  const noBtn = document.getElementById("noBtn");
+  const yesBtn = document.querySelector(".btn-yes");
+  const container = document.querySelector(".container");
+  const h1 = document.querySelector("h1");
+  
+  const yesBtnRect = yesBtn.getBoundingClientRect();
+  const containerRect = container.getBoundingClientRect();
+  const h1Rect = h1.getBoundingClientRect();
+  
+  // Calculate the center position for both buttons
+  const gap = 30;
+  const totalWidth = (yesBtnRect.width * 2) + gap;
+  const centerX = containerRect.left + (containerRect.width - totalWidth) / 2;
+  
+  // Calculate proper vertical position (below the h1 with original margin)
+  const topPosition = h1Rect.bottom + 50; // 50px gap below h1
+  
+  // Reposition Yes button to the left of center
+  yesBtn.style.position = 'fixed';
+  yesBtn.style.left = centerX + 'px';
+  yesBtn.style.top = topPosition + 'px';
+  
+  // Position No button to the right with gap
+  noBtn.style.left = (centerX + yesBtnRect.width + gap) + 'px';
+  noBtn.style.top = topPosition + 'px';
+});
+
+function moveButton(event) {
+  const btn = document.getElementById("noBtn");
+  
+  // Get cursor position
+  const cursorX = event ? event.clientX : window.innerWidth / 2;
+  const cursorY = event ? event.clientY : window.innerHeight / 2;
+  
+  // Get button dimensions
+  const btnWidth = btn.offsetWidth;
+  const btnHeight = btn.offsetHeight;
+  
+  // Calculate safe boundaries (keep button on screen)
+  const padding = 20;
+  const maxX = window.innerWidth - btnWidth - padding;
+  const maxY = window.innerHeight - btnHeight - padding;
+  
+  let newX, newY;
+  let distance;
+  
+  // Keep trying random positions until we find one far from cursor
+  do {
+    newX = Math.random() * maxX;
+    newY = Math.random() * maxY;
+    
+    // Calculate distance from cursor
+    const btnCenterX = newX + btnWidth / 2;
+    const btnCenterY = newY + btnHeight / 2;
+    distance = Math.sqrt(Math.pow(btnCenterX - cursorX, 2) + Math.pow(btnCenterY - cursorY, 2));
+  } while (distance < 300); // Ensure button is at least 300px away from cursor
+  
+  btn.style.left = newX + "px";
+  btn.style.top = newY + "px";
+  
+  // After a few attempts, make it even more playful
+  attempts++;
+  if (attempts === 3) {
+    btn.textContent = "No...?";
+  } else if (attempts === 5) {
+    btn.textContent = "Maybe?";
+  } else if (attempts === 7) {
+    btn.textContent = "Just click Yes!";
+  } 
+}
+
+function sayYes() {
+  const questionScreen = document.getElementById("questionScreen");
+  const celebration = document.getElementById("celebration");
+  
+  questionScreen.style.display = "none";
+  celebration.style.display = "block";
+  
+  // Create floating hearts
+  for (let i = 0; i < 30; i++) {
+    setTimeout(() => {
+      createHeart();
+    }, i * 100);
+  }
+}
+
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "hearts";
+  heart.textContent = ["💕", "💖", "💗", "💝", "💓", "💞"][Math.floor(Math.random() * 6)];
+  heart.style.left = Math.random() * window.innerWidth + "px";
+  heart.style.top = window.innerHeight + "px";
+  heart.style.animation = `float ${3 + Math.random() * 2}s linear`;
+  
+  document.body.appendChild(heart);
+  
+  setTimeout(() => {
+    heart.remove();
+  }, 5000);
+}
+</script>
+
+</body>
+</html>
