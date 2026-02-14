@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You ❤️</title>
+
+<style>
+body {
+  background: linear-gradient(to bottom, #ffd6e8, #fff);
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Georgia", serif;
+}
+
+.container {
+  text-align: center;
+}
+
+.envelope {
+  position: relative;
+  width: 220px;
+  height: 140px;
+  background: #ff8fb1;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.4s;
+}
+
+.envelope:hover {
+  transform: scale(1.05);
+}
+
+.flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ffb3c6;
+  clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
+  transform-origin: top;
+  transition: transform 1s;
+}
+
+.open .flap {
+  transform: rotateX(180deg);
+}
+
+.heart {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 30px;
+}
+
+.letter {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 200px;
+  height: 120px;
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-sizing: border-box;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1s;
+  overflow: hidden;
+}
+
+.open .letter {
+  opacity: 1;
+  transform: translateY(-120px);
+}
+
+.paper {
+  margin-top: 40px;
+  display: none;
+  background: #fff;
+  width: 320px;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0px 12px 30px rgba(0,0,0,0.2);
+  animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+  from {opacity:0; transform: translateY(20px);}
+  to {opacity:1; transform: translateY(0);}
+}
+
+h2 {
+  color: #ff4d79;
+}
+
+p {
+  font-size: 15px;
+  line-height: 1.6;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="envelope" id="env" onclick="openLetter()">
+    <div class="flap"></div>
+    <div class="heart">❤️</div>
+    <div class="letter"></div>
+  </div>
+
+  <div class="paper" id="paper">
+    <h2>To My Favorite Person 💕</h2>
+    <p>
+      Hi love,<br><br>
+
+      I just wanted to make something small to remind you how special you are to me.  
+      Being with you feels easy, safe, fun, and full of love all at the same time.  
+      You make me laugh, you support me, and somehow you make even the boring days feel better just by being in them.  
+
+      <br><br>
+      I’m so thankful for you, for your heart, your patience, and all the little moments we share.  
+      No matter where life takes us, I’ll always be happy as long as you’re next to me.  
+
+      <br><br>
+      I love you more than you know. 💖  
+      <br><br>
+      Always yours,  
+      <br>
+      Susan 💌
+    </p>
+  </div>
+</div>
+
+<script>
+function openLetter() {
+  const env = document.getElementById("env");
+  const paper = document.getElementById("paper");
+
+  env.classList.add("open");
+
+  setTimeout(() => {
+    paper.style.display = "block";
+  }, 900);
+}
+</script>
+
+</body>
+</html>
